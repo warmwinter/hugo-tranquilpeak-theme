@@ -1,26 +1,26 @@
-{{ $.Scratch.Set "isPost" false }}
-{{ if .IsPage }}
-  {{ if eq .Type "post" }}
-    {{ $.Scratch.Set "isPost" true }}
-  {{ end }}
-{{ end }}
-{{ if and (and ($.Scratch.Get "isPost") (lt .Site.Params.sidebarBehavior 3)) (or (and .Site.Params.clearReading (not .Params.clearReading)) .Params.clearReading) }}
-  {{ .Scratch.Set "sidebarBehavior" (add .Site.Params.sidebarBehavior 3) }}
-{{ else }}
-  {{ .Scratch.Set "sidebarBehavior" .Site.Params.sidebarBehavior }}
-{{ end }}
+{{- $.Scratch.Set "isPost" false -}}
+{{- if .IsPage -}}
+  {{- if eq .Type "post" -}}
+    {{- $.Scratch.Set "isPost" true -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (and ($.Scratch.Get "isPost") (lt .Site.Params.sidebarBehavior 3)) (or (and .Site.Params.clearReading (not .Params.clearReading)) .Params.clearReading) -}}
+  {{- .Scratch.Set "sidebarBehavior" (add .Site.Params.sidebarBehavior 3) -}}
+{{- else -}}
+  {{- .Scratch.Set "sidebarBehavior" .Site.Params.sidebarBehavior -}}
+{{- end -}}
 <!-- Fix hugo 0.17 expects ".Site.Author.gravatarEmail" whereas hugo 0.18 expects ".Site.Author.gravataremail" -->
-{{ if .Site.Author.gravatarEmail }}
-  {{ .Scratch.Set "gravatarEmail" .Site.Author.gravatarEmail }}
-{{ end }}
-{{ if .Site.Author.gravataremail }}
-  {{ .Scratch.Set "gravatarEmail" .Site.Author.gravataremail }}
-{{ end }}
-{{ if .Scratch.Get "gravatarEmail" }}
-  {{ .Scratch.Set "authorPicture" (printf "//www.gravatar.com/avatar/%s" (urlize (md5 (.Scratch.Get "gravatarEmail")))) }}
+{{- if .Site.Author.gravatarEmail -}}
+  {{- .Scratch.Set "gravatarEmail" .Site.Author.gravatarEmail -}}
+{{- end -}}
+{{- if .Site.Author.gravataremail -}}
+  {{- .Scratch.Set "gravatarEmail" .Site.Author.gravataremail -}}
+{{- end -}}
+{{- if .Scratch.Get "gravatarEmail" -}}
+  {{- .Scratch.Set "authorPicture" (printf "//www.gravatar.com/avatar/%s" (urlize (md5 (.Scratch.Get "gravatarEmail")))) -}}
 {{ else if .Site.Author.picture }}
-  {{ .Scratch.Set "authorPicture" (absURL .Site.Author.picture) }}
-{{ end }}
+  {{- .Scratch.Set "authorPicture" (absURL .Site.Author.picture) -}}
+{{- end -}}
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
   <head>
@@ -34,9 +34,9 @@
     <meta name="keywords" content="{{ with .Keywords }}{{ delimit . ", " }}{{ end }}{{ if .Site.Params.keywords }}, {{ delimit .Site.Params.keywords ", " }}{{ end }}">
 
     <link rel="icon" href="{{ with .Site.Params.favicon }}{{ . }}{{ else }}/favicon.png{{ end }}">
-    {{ with .RSSLink }}
+    {{- with .RSSLink -}}
       <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ . }}">
-    {{ end }}
+    {{- end -}}
 
     <!-- open graph data -->
     <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
@@ -48,41 +48,41 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ .Site.Title }}">
     <meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    {{ with .Site.Author.twitter }}
+    {{- with .Site.Author.twitter -}}
       <meta name="twitter:creator" content="@{{ . }}">
-    {{ end }}
-    {{ with .Site.Params.fbAppId }}
+    {{- end -}}
+    {{- with .Site.Params.fbAppId -}}
       <meta property="fb:app_id" content="{{ . }}">
-    {{ end }}
+    {{- end -}}
 
     <!-- Facebook admins -->
-    {{ with .Site.Params.fbAdminIds }}
-      {{ range . }}
+    {{- with .Site.Params.fbAdminIds -}}
+      {{- range . -}}
           <meta property="fb:admins" content="{{ . }}">
-      {{ end }}
-    {{ end }}
+      {{- end -}}
+    {{- end -}}
 
-    {{ if .Scratch.Get "gravatarEmail" }}
+    {{- if .Scratch.Get "gravatarEmail" -}}
       <meta property="og:image" content="//www.gravatar.com/avatar/{{ (md5 (.Scratch.Get "gravatarEmail")) | urlize }}?s=640">
-    {{ else if .Site.Author.picture }}
+    {{- else if .Site.Author.picture -}}
       <meta property="og:image" content="{{ .Site.Author.picture | absURL }}">
-    {{ end }}
+    {{- end -}}
 
-    {{ with .Params.thumbnailImage }}
+    {{- with .Params.thumbnailImage -}}
       <meta property="og:image" content="{{ . | absURL }}">
-    {{ end }}
-    {{ with .Params.coverImage }}
+    {{- end -}}
+    {{- with .Params.coverImage -}}
       <meta property="og:image" content="{{ . | absURL }}">
-    {{ end }}
-    {{ with .Params.gallery }}
-      {{ range . }}
+    {{- end -}}
+    {{- with .Params.gallery -}}
+      {{- range . -}}
         <meta property="og:image" content="{{ range first 1 (split . " ") }}{{ . | absURL }}{{ end }}">
-      {{ end }}
-    {{ end }}
+      {{- end -}}
+    {{- end -}}
 
-    {{ with .Site.Author.googlePlus }}
+    {{- with .Site.Author.googlePlus -}}
       <link rel="publisher" href="https://plus.google.com/{{ . | urlize }}">
-    {{ end }}
+    {{- end -}}
 
     <!--EXTERNAL STYLES-->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -91,15 +91,16 @@
     <!--EXTERNAL STYLES END-->
     <!--STYLES-->
     <link rel="stylesheet" href="/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    <link rel="stylesheet" href="/css/blog.css" />
     <!--STYLES END-->
-    {{ range .Site.Params.customCSS }}
+    {{- range .Site.Params.customCSS }}
       <link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ . }}">
-    {{ end }}
+    {{- end }}
 
-    {{ if .Params.ga.async }}
-      {{ template "_internal/google_analytics_async.html" . }}
-    {{ else }}
-      {{ template "_internal/google_analytics.html" . }}
-    {{ end }}
-    {{ partial "head_end.html" . }}
+    {{- if .Params.ga.async -}}
+      {{- template "_internal/google_analytics_async.html" . -}}
+    {{- else -}}
+      {{- template "_internal/google_analytics.html" . -}}
+    {{- end }}
+    {{- partial "head_end.html" . -}}
   </head>
